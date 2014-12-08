@@ -1,6 +1,6 @@
 var express = require('express'),
     morgan  = require('morgan'),
-    http = require('http'),
+    // http = require('http'),
     path = require('path');
 
 // Create a class that will be our main application
@@ -18,10 +18,9 @@ var SimpleStaticServer = function() {
   self.app.use(morgan('[:date] :method :url :status'));	// Log requests
   self.app.use(express.static(path.join(__dirname, 'public')));	// Process static files
 
-  var httpServer = http.Server(self.app);
-  var sio = require('socket.io');
-  var io = sio(httpServer);
-  httpServer.listen(50000, function() {console.log('Listening on 50000');});
+  // var httpServer = http.Server(self.app);
+  // var sio = require('socket.io');
+  // var io = sio(httpServer);
 
   // Start the server (starts up the sample application).
   self.start = function() {

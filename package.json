@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "M2C Simple Static Server",
   "author": {
-    "name": "Joe mertz",
-    "email": "JoeMertz@cmu.edu",
-    "url": "http://www.andrew.cmu.edu/course/67-328"
+    "name": "Ian Go",
+    "email": "ianpgo@gmail.com",
+    "url": "http://www.ianpgo.com"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,10 @@
   },
   "dependencies": {
     "express": "4.8",
-    "morgan": "1.2"
+    "morgan": "1.2",
+    "socket.io": "1.2.0",
+    "ejs": "1.0.0",
+    "mongodb":"1.4.23"
   },
   "devDependencies": {},
   "bundleDependencies": [],

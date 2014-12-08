@@ -1,57 +1,50 @@
-/*
- * In this example, I put the typical Express stuff first
- * even though I don't use it in the example.  It can serve
- * as a template for your apps if you need Express.
- * Then I put the socket.io specific stuff after
- * It doesn't need to be after, but I'm doing it this
- * way just to make it easier to differentiate the two.
- */
-
-// Normal Express requires...
 var express = require('express'),
-  http = require('http'),
-  morgan = require('morgan'),
-  app = express();
+    morgan  = require('morgan'),
+    path = require('path');
+    aap
 
-// Set the views directory
-app.set('views', __dirname + '/views');
-// Define the view (templating) engine
-app.set('view engine', 'ejs');
-// Log requests
-app.use(morgan('tiny'));
+// Create a class that will be our main application
+var SimpleStaticServer = function() {
 
-// This is where your normal app.get, app.put, etc middleware would go.
+  // set self to the scope of the class
+  var self = this;  
+  
+  /*  ================================================================  */
+  /*  App server functions (main app logic here).                       */
+  /*  ================================================================  */
 
-// Handle static files
-app.use(express.static(__dirname + '/public'));
+  self.app = express();
+  //	self.app.use(connect(connect.basicAuth('j', 'jmjm')))
+  self.app.use(morgan('[:date] :method :url :status'));	// Log requests
+  self.app.use(express.static(path.join(__dirname, 'public')));	// Process static files
 
-/* 
- * This section is pretty typical for setting up socket.io.
- *
- * 1) it is necessary to link socket.io to the same http-layer
- * server that Express is running in.  In other words, you can think
- * of Express as a higher-level server running on a lower-level
- * http layer.  You need to get a reference to that http-layer server
- * (the variable httpServer) that Express is using (variable app).
- *
- * 2) Then require socket.io
- * 3) Give socket.io the reference to the same the underlying http server
- * that  Express is using.
- * 4) Start the httpServer listening for both Express and socket.io
- *
- * This can be essentially reused as boilerplate for setting up socket.io
- * alongside Express.
+  var httpServer = http.Server(self.app);
+  var sio = require('socket.io');
+  var io = sio(httpServer);
+
+  // Start the server (starts up the sample application).
+  self.start = function() {
+    /*
+     * OpenShift will provide environment variables indicating the IP 
+     * address and PORT to use.  If those variables are not available
+     * (e.g. when you are testing the application on your laptop) then
+     * use default values of localhost (127.0.0.1) and 33333 (arbitrary).
+     */
+    self.ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+    self.port      = process.env.OPENSHIFT_NODEJS_PORT || 33333;
+
+    //  Start listening on the specific IP and PORT
+    self.app.listen(self.port, self.ipaddress, function() {
+      console.log('%s: Node server started on %s:%d ...',
+                        Date(Date.now() ), self.ipaddress, self.port);
+    });
+  };
+}; 
+
+
+/**
+ *  main():  Main code.
  */
+var sss = new SimpleStaticServer();
+sss.start();
 
-/*1*/ var httpServer = http.Server(app);
-/*2*/ var sio =require('socket.io');
-/*3*/ var io = sio(httpServer);
-/*4*/ httpServer.listen(50000, function() {console.log('Listening on 50000');});
-
-/*
- * For this particular example, I have separated out the main logic for 
- * controlling the socket.io exchange to a route called serverSocket.js
- */
-
-var gameSockets = require('./routes/serverSocket.js');
-gameSockets.init(io);

@@ -1,9 +1,11 @@
 body
 {
     font-family: 'Helvetica', 'Arial', sans-serif;
+    background-color: black;
 }
 
 .question{
 	text-align: center;
 	font-weight: bold;
+	color: white;
 };

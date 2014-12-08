@@ -1,7 +1,9 @@
 var express = require('express'),
     morgan  = require('morgan'),
-    // http = require('http'),
+    http = require('http'),
     path = require('path');
+
+// var gameSockets = require('./routes/serverSocket.js');
 
 // Create a class that will be our main application
 var SimpleStaticServer = function() {
@@ -15,14 +17,15 @@ var SimpleStaticServer = function() {
 
   self.app = express();
   //	self.app.use(connect(connect.basicAuth('j', 'jmjm')))
-  self.app.use(morgan('[:date] :method :url :status'));	// Log requests
+  self.app.use(morgan('dev'));	// Log requests
   self.app.use(express.static(path.join(__dirname, 'public')));	// Process static files
 
-  // var httpServer = http.Server(self.app);
-  // var sio = require('socket.io');
-  // var io = sio(httpServer);
+  //configure sockets
+  var httpServer = http.Server(self.app);
+  var sio = require('socket.io');
+  var io = sio(httpServer);
 
-  // Start the server (starts up the sample application).
+  // Start the server
   self.start = function() {
     /*
      * OpenShift will provide environment variables indicating the IP 
@@ -31,7 +34,7 @@ var SimpleStaticServer = function() {
      * use default values of localhost (127.0.0.1) and 33333 (arbitrary).
      */
     self.ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
-    self.port      = process.env.OPENSHIFT_NODEJS_PORT || 33333;
+    self.port      = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
     //  Start listening on the specific IP and PORT
     self.app.listen(self.port, self.ipaddress, function() {
@@ -39,6 +42,9 @@ var SimpleStaticServer = function() {
                         Date(Date.now() ), self.ipaddress, self.port);
     });
   };
+
+  // gameSockets.init(io);
+
 }; 
 
 

@@ -1,7 +1,6 @@
 var express = require('express'),
     morgan  = require('morgan'),
     path = require('path');
-    aap
 
 // Create a class that will be our main application
 var SimpleStaticServer = function() {

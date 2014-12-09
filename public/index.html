@@ -11,8 +11,8 @@
 
 	<div class="row">
 		<div class="small-12 medium-10 medium-offset-1 columns">
-			 <h1 class="question">Here is the church, Here is the steeple, Open the doors, And there is <br>
-			 	<span id="answer-field">___________________________.</span>
+			 <h1 class="question">Here is the church, Here is the steeple, Open the doors, And there is
+			 	<span id="answer-field">___________________</span>
 			 </h1>
 		</div>
 	</div>
@@ -42,16 +42,29 @@
 	<script src="javascripts/jquery-2.1.1.js"></script>
 	<script>
 	$(document).ready(function(){
+
+
 		$(".cards").on("click", function(){
 			var tempAnswer= $(this).text();
 			$("#answer-field").hide().text(tempAnswer).fadeIn();
 			$("#answer-field").css("text-decoration","underline");
+			clearInterval(blinker);
 		});
+
 		$(".cards-submit").on("mouseenter", function(){
 			$(this).css("background-color","black").css("color","white").css("border","1px solid white");
 		}).on("mouseleave",function(){
 			$(this).css("background-color","white").css("color","black").css("border","0px");
 		});
+
+		var blinker = setInterval(function(){
+
+		$("#answer-field").fadeTo("slow",0.00);
+		setTimeout(function(){$("#answer-field").fadeTo("slow",1.00)},200);
+
+		},3000);
+
+
 	});
 	</script>
 </body>

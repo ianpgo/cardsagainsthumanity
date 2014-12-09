@@ -23,7 +23,7 @@
 
 // });
 
-var socket = io.connect('/');
+var socket = io.connect(':8000/');
 socket.on('players', function (data) {
   console.log(data);
   $("#numPlayers").text(data.number);

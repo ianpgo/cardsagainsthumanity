@@ -10,6 +10,8 @@
 </head>
 <body>
 
+	<h1>There are currently <span id="numPlayers">no</span> players.</h1>
+
 	<div class="row">
 		<div class="small-12 medium-10 medium-offset-1 columns">
 			 <h1 class="question">Here is the church, Here is the steeple, Open the doors, And there is
@@ -40,7 +42,11 @@
 	<footer>
 		<p>Developed by Ian Go</p>
 	</footer>
-	<script src="javascripts/jquery-2.1.1.js"></script>
+	<script src="/javascripts/jquery-2.1.1.js"></script>
+		<!-- Notice that socket.io adds a path to its client-side js that is not in /public -->
+	<script src="/socket.io/socket.io.js"></script>
+	<!-- This is my example client-side javascript that uses socket.io -->
+	<script src="/javascripts/clientSocket.js"></script>
 	<script>
 	$(document).ready(function(){
 

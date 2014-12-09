@@ -10,69 +10,62 @@
 </head>
 <body>
 
-	<h1>There are currently <span id="numPlayers">no</span> players.</h1>
+	<div class="joinView">
+		<h1 class="title">Cards Against Humanity</h1>
+		<br>
+		<h2 class="title">Enter Username</h2>
+		<div class='row'>
+			<div class="small-10 medium-6 small-centered columns">
+				<input class="button expand" id="username" placeholder="____________________________________"></input>
+			</div>
+		</div>
+		<div class='row'>
+			<div class="small-10 medium-6 small-centered columns">
+				<button class="button expand" id="joinGame">Join Game</button>
+			</div>
+		</div>
+	</div>
+	
+	<div class="playerView">
+		<div class="row">
+			<div class="small-12 medium-10 medium-offset-1 columns">
+				 <h1 class="question">Here is the church, Here is the steeple, Open the doors, And there is
+				 	<span id="answer-field">___________________</span>
+				 </h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="small-6 medium-2 columns">
+				<div class="cards">Being on Fire.</div>
+			</div>
+			<div class="small-6 medium-2 columns">
+				<div class="cards">Bees?</div>
+			</div>
+			<div class="small-6 medium-2 columns">
+				<div class="cards">Auschwitz.</div>
+			</div>
+			<div class="small-6 medium-2 columns">
+				<div class="cards">Jewish Fraternaties.</div>
+			</div>
+			<div class="small-6 medium-2 columns">
+				<div class="cards">Throwing a virgin into a volcano.</div>
+			</div>
+			<div class="small-6 medium-2 columns">
+				<div class="cards-submit">Submit</div>
+			</div>
+		</div>
+	</div>
 
-	<div class="row">
-		<div class="small-12 medium-10 medium-offset-1 columns">
-			 <h1 class="question">Here is the church, Here is the steeple, Open the doors, And there is
-			 	<span id="answer-field">___________________</span>
-			 </h1>
-		</div>
-	</div>
-	<div class="row">
-		<div class="small-6 medium-2 columns">
-			<div class="cards">Being on Fire.</div>
-		</div>
-		<div class="small-6 medium-2 columns">
-			<div class="cards">Bees?</div>
-		</div>
-		<div class="small-6 medium-2 columns">
-			<div class="cards">Auschwitz.</div>
-		</div>
-		<div class="small-6 medium-2 columns">
-			<div class="cards">Jewish Fraternaties.</div>
-		</div>
-		<div class="small-6 medium-2 columns">
-			<div class="cards">Throwing a virgin into a volcano.</div>
-		</div>
-		<div class="small-6 medium-2 columns">
-			<div class="cards-submit">Submit</div>
-		</div>
-	</div>
 	<footer>
 		<p>Developed by Ian Go</p>
 	</footer>
 	<script src="/javascripts/jquery-2.1.1.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<!-- Notice that socket.io adds a path to its client-side js that is not in /public -->
 	<script src="/socket.io/socket.io.js"></script>
-	<!-- This is my example client-side javascript that uses socket.io -->
+	<!-- This is my js for non-socket things -->
+	<script src="/javascripts/clientApp.js"></script>
+	<!-- This is my client-side javascript that uses socket.io -->
 	<script src="/javascripts/clientSocket.js"></script>
-	<script>
-	$(document).ready(function(){
-
-
-		$(".cards").on("click", function(){
-			var tempAnswer= $(this).text();
-			$("#answer-field").hide().text(tempAnswer).fadeIn();
-			$("#answer-field").css("text-decoration","underline");
-			clearInterval(blinker);
-		});
-
-		$(".cards-submit").on("mouseenter", function(){
-			$(this).css("background-color","black").css("color","white").css("border","1px solid white");
-		}).on("mouseleave",function(){
-			$(this).css("background-color","white").css("color","black").css("border","0px");
-		});
-
-		var blinker = setInterval(function(){
-
-		$("#answer-field").fadeTo("slow",0.00);
-		setTimeout(function(){$("#answer-field").fadeTo("slow",1.00)},200);
-
-		},3000);
-
-
-	});
-	</script>
 </body>
 </html>

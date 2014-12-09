@@ -22,7 +22,7 @@ Player.prototype.submitCard = function(card) {
 Player.prototype.fillHand = function(fillerHand){
 	fillerHand.forEach(function(card){
 		this.hand.push(card);
-	}):
+	});
 }
 
 //make the player the current host
@@ -34,3 +34,5 @@ Player.prototype.makeHost = function(){
 Player.prototype.unHost = function(){
 	this.host = false;
 }
+
+module.exports = Player;

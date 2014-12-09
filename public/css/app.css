@@ -4,6 +4,12 @@ body
     background-color: black;
 }
 
+.title{
+	text-align: center;
+	font-weight: bold;
+	color: white;
+}
+
 .question
 {
 	text-align: left;
@@ -39,4 +45,21 @@ h1{
 
 @media screen and (max-width: 40em) {
     h1{font-size:2.0em;}
+}
+
+.playerView{
+	display: none;
+}
+
+/*CSS FOR JOIN GAME VIEW*/
+
+#joinGame{
+	background-color: white;
+	color:black;
+	font-weight: bold;
+}
+
+#username{
+	background-color: black;
+	text-decoration: underline;
 }

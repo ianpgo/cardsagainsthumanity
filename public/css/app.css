@@ -4,8 +4,34 @@ body
     background-color: black;
 }
 
-.question{
-	text-align: center;
+.question
+{
+	text-align: left;
 	font-weight: bold;
 	color: white;
-};
+}
+
+h1{
+	font-size: 3.5em;
+}
+
+.cards-container{
+
+}
+.cards{
+	background: white;
+	border-radius:5px;
+	height: 200px;
+	width: 115%;
+	padding: 10px;
+	font-weight: bold;
+}
+
+.cards-submit{
+	background: white;
+	border-radius:5px;
+	height: 200px;
+	width: 115%;
+	padding: 10px;
+	font-weight: bold;
+}

@@ -59,11 +59,11 @@ exports.init = function(io){
 		});
 
 		socket.on("disconnect",function(){
-			if(currentPlayers > 0){ß
-			var disPlayer = getPlayer(socket.id);
-			io.sockets.emit('dropPlayer',{disconnectName:disPlayer.username});
-			console.log(disPlayer.username+" has dropped, game ended");
-		}
+		// 	if(currentPlayers > 0){
+		// 	var disPlayer = getPlayer(socket.id);
+		// 	io.sockets.emit('dropPlayer',{disconnectName:disPlayer.username});
+		// 	console.log(disPlayer.username+" has dropped, game ended");
+		// }
 			currentPlayers = 0;
 			players=[];
 			questionDeck =[];
@@ -104,7 +104,7 @@ exports.init = function(io){
 		//Return a random hand from deck
 		function randomHand(deck){
 			var randomHand = [];
-			for(var i=0; i < 6; i++) {
+			for(var i=0; i < 5; i++) {
 				var index = Math.random()*(deck.length);
 				randomHand.push(deck.splice(index, 1)[0]);
 			};

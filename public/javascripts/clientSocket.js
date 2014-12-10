@@ -57,11 +57,11 @@ $(document).ready(function(){
 	//Recieve Hand
 	socket.on("drawHand",function(data){
 		var hand = data.hand;
-		if (host === true){
-			
-		}else{
-			
-		};
+
+		hand.forEach(function(card){
+			$("#playerAnswerRow").append("<div class='small-6 medium-2 columns'><div class='cards'>"+card+"</div></div>").fadeIn();
+		});
+		$("#playerAnswerRow").append("<div class='small-6 medium-2 columns'><div class='cards-submit'>Submit</div></div>").fadeIn();
 	});
 
 	// //ON SUBMITTING YOUR CARD

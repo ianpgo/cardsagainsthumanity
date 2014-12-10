@@ -71,6 +71,7 @@ $(document).ready(function(){
 	//Recieve Hand
 	socket.on("drawHand",function(data){
 		var hand = data.hand;
+		$("#playerInfo").fadeIn();
 
 		hand.forEach(function(card){
 			$("#playerAnswerRow").append("<div class='small-6 medium-2 columns'><div class='cards'>"+card+"</div></div>").fadeIn();

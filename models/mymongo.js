@@ -57,7 +57,7 @@ exports.find = function(collection, query, callback) {
  }
 
  // FindAll
-exports.findAll = function(collection, query, callback) {
+exports.findAll = function(collection, callback) {
         var crsr = mongoDB.collection(collection).find();
         crsr.toArray(function(err, docs) {
           if (err) doError(err);

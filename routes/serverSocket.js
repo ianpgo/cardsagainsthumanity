@@ -25,6 +25,23 @@ exports.init = function(io){
 			console.log("Current players: "+currentPlayers);
 			if(currentPlayers===1){
 				players.push(new Player(data.name, socket.id, [], true)); //make first player host
+
+			//Populate questionDeck
+			deck.findAll("blackcards", function(blackcards){
+				console.log(blackcards);
+				blackcards.forEach(function(card){
+					questionDeck.push(card.question);
+				});
+			});
+
+			//Populate answerDeck
+			deck.findAll("whitecards", function(whitecards){
+				console.log(whitecards);
+				whitecards.forEach(function(card){
+					answerDeck.push(card.answer);
+				});
+			});
+
 			}else{
 				players.push(new Player(data.name, socket.id, [], false)); //make subsequent players not hosts
 			}
@@ -40,10 +57,11 @@ exports.init = function(io){
 		socket.on("startGame", function(data){
 			console.log("host started game");
 
-			//populate questionDeck from mongoDB
-			questionDeck = fakeDeck.questionDeck;
-			//populate answerDeck from mongoDB
-			answerDeck = fakeDeck.answerDeck; 
+			// //populate questionDeck from mongoDB
+			// questionDeck = fakeDeck.questionDeck;
+			// //populate answerDeck from mongoDB
+			// answerDeck = fakeDeck.answerDeck; 
+
 			console.log("question deck cards: "+questionDeck.length);
 			console.log("answer deck cards: "+answerDeck.length);
 

@@ -103,7 +103,8 @@ this.answerDeck = ['Being on Fire',
   'Destroying the evidence'];
 
 this.questionDeck = [ 'How did I lose my virginity?',
-  'Why can’t I sleep at night?','What’s that smell?',
+  'Why can’t I sleep at night?',
+  'What’s that smell?',
   'I got 99 problems but 888 ain’t one.',
   'Maybe she’s born with it. Maybe it’s 888.',
   'What’s the next Happy Meal Toy?',

@@ -1,3 +1,5 @@
+/*GENERAL STYLES*/
+
 body
 {
     font-family: 'Helvetica', 'Arial', sans-serif;
@@ -21,6 +23,11 @@ h1{
 	font-size: 3.4em;
 }
 
+h1,h2,h3,h4,h5,h6{
+	font-family: 'Helvetica', 'Arial', sans-serif;
+    font-weight: bold;
+}
+
 .cards-container{
 
 }
@@ -32,6 +39,22 @@ h1{
 	padding: 10px;
 	font-weight: bold;
 	margin-bottom: 10px;
+}
+
+.bigWhiteCard{
+	background: white;
+	border-radius:5px;
+	color:black;
+	height: 200px;
+}
+
+.vertical-align{
+	text-align: center;
+    position: relative;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 
 .cards-submit{
@@ -47,19 +70,32 @@ h1{
     h1{font-size:2.0em;}
 }
 
+.whiteButton{
+	background-color: white;
+	color:black;
+	font-weight: bold;
+	border-radius:5px;
+}
+/*STYLES FOR PLAYER HAND*/
+
 .playerView{
 	display: none;
 }
 
 /*CSS FOR JOIN GAME VIEW*/
 
-#joinGame{
-	background-color: white;
-	color:black;
-	font-weight: bold;
-}
-
 #username{
 	background-color: black;
-	text-decoration: underline;
+	font-size: 2em;
+	border-bottom: 1px solid white;
+	outline:none;
+}
+
+/*CSS FOR PLAYER WAIT VIEW*/
+.playerWait{
+	display:none;
+}
+/*CSS FOR HOST WAIT VIEW*/
+.hostWait{
+	display: none;
 }

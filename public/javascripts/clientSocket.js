@@ -8,8 +8,20 @@ $(document).ready(function(){
 		socket.emit('newPlayer',{name:playerName});
 	});
 
-	// //ON PRESSING STARTGAME (FROM HOST)
-	// socket.emit('startGame');
+	//ON Player waiting for host to start game
+	socket.on("playerWait", function(data){
+		$('.joinView').fadeOut();
+		$('.playerWait').fadeIn();
+	});
+
+	//ON Host View waiting to start game
+	socket.on("hostWait", function(data){
+		$('.joinView').fadeOut();
+		$('.hostWait').fadeIn();
+	});
+
+	//Host presses start game 
+	socket.emit('startGame');
 
 	// //ON SUBMITTING YOUR CARD
 	// socket.emit('submitCard',{card:cardString});

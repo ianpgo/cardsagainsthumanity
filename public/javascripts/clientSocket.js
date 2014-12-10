@@ -146,6 +146,10 @@ $(document).ready(function(){
 		};
 		$('.endRoundView').fadeOut();
 	});
+
+	socket.on('dropPlayer',function(){
+		$(".container").html("<div class='small-12 medium-10 medium-offset-1 columns'><h1 class='title'>It looks like someone disconnected from the game. Refresh to start a new one!</h1></div>");
+	});
 	/*****************HELPER FUNCTIONS******************/
 
 	//removes card from hand

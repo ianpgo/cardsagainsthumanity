@@ -121,6 +121,7 @@ exports.init = function(io){
 			selectionDeck =[];
 			//reset question and answer decks
 			console.log(players);
+			io.sockets.emit('dropPlayer');
 		});
 
 		/*****************HELPER FUNCTIONS******************/

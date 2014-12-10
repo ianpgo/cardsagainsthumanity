@@ -1,17 +1,20 @@
 var Player = require('../models/Player.js');
 var deck = require('../models/mymongo.js');
 
-var players = []; //array of player objects
 var playerHost = false; //if true player is Host
+var questionDeck = [];
+var answerDeck = []; 
 
 exports.init = function(io){
-	var questionDeck = [];
-	var answerDeck = []; 
 	var currentPlayers = 0; 
 	var round = 0;
 	var host; //name of current host
+	var players = []; //array of player objects
 
 	console.log("sockets started");
+
+	//populate questionDeck from mongoDB
+	//populate answerDeck from mongoDB
 
 	io.sockets.on('connection', function(socket) {
 		
@@ -38,6 +41,17 @@ exports.init = function(io){
 			players.forEach(function(player){
 				player.hand = randomHand(answerDeck);
 			});
+		});
+
+		socket.on("disconnect",function(){
+			if(currentPlayers > 0){
+			var disPlayer = getPlayer(socket.id);
+			socket.broadcast.emit('dropPlayer',{disconnectName:disPlayer.username});
+		}
+			currentPlayers = 0;
+			players=[];
+			//reset question and answer decks
+			console.log(players);
 		});
 
 		//Gets a player according to socketID

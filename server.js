@@ -1,15 +1,16 @@
 var express = require('express'),
     morgan  = require('morgan'),
-    app = express();
-    http = require('http').Server(app),
+    self = this;
+    self.app = express();
+    http = require('http').Server(self.app),
     path = require('path');
 
 var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8000;
 var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 
-app.use(morgan('dev'));  // Log requests
+self.app.use(morgan('dev'));  // Log requests
 
-app.use(express.static(path.join(__dirname, 'public'))); // Process static files
+self.app.use(express.static(path.join(__dirname, 'public'))); // Process static files
 
 var io = require('socket.io').listen(http);
 

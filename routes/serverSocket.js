@@ -87,6 +87,7 @@ exports.init = function(io){
 			players=[];
 			questionDeck =[];
 			answerDeck =[];
+			selectionDeck =[];
 			//reset question and answer decks
 			console.log(players);
 		});

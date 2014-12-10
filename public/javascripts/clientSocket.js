@@ -34,8 +34,8 @@ $(document).ready(function(){
 
 	//Recieve the question
 	socket.on('drawQuestion',function(data){
-		question = data.question;
-		editQuestion = question;
+		var question = data.question;
+		var editQuestion = question;
 
 		//Format question to include answerfield
 		if(host===true){
@@ -127,6 +127,8 @@ $(document).ready(function(){
 		$(".endRoundView").fadeIn();
 	});
 
+	//start a new round after chosen
+
 	/*****************HELPER FUNCTIONS******************/
 
 	//removes card from hand
@@ -134,13 +136,4 @@ $(document).ready(function(){
 		var index = hand.indexOf(card);
 		hand.splice(index,1);
 	};
-
-	// //ON SUBMITTING YOUR CARD
-	// socket.emit('submitCard',{card:cardString});
-
-	// //START A NEW ROUND SENT AFTER WINNING CARD IS CHOSEN 
-
-	// //ON CHOOSING A WINNING CARD (FROM HOST)
-	// socket.emit('chooseCard',{card:winningCard});
-
 });

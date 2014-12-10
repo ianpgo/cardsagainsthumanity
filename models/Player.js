@@ -18,6 +18,12 @@ Player.prototype.submitCard = function(card) {
 	return this.hand.splice(index, 1);
 };
 
+//remove card from players hand
+Player.prototype.removeCard = function(card){
+	var index = this.hand.indexOf(card);
+	this.hand.splice(index, 1);
+};
+
 //fill player's hand from cards
 Player.prototype.fillHand = function(fillerHand){
 	fillerHand.forEach(function(card){

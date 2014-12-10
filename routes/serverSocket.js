@@ -12,13 +12,14 @@ exports.init = function(io){
 
 	var questionDeck = []; //empty array for deck of question cards
 	var answerDeck = []; //empty array for deck of answer cards 
-	var selectionDeck=[]; //deck of player selected cards
+	var selectionDeck=[]; //deck of player selected cards with players mapped
 
 	console.log("sockets started");
 	io.sockets.on('connection', function(socket) {
 		
 		console.log("a new player on socket "+socket.id+" has joined.");
 
+		//When a new player is added to the game
 		socket.on("newPlayer", function(data){
 			currentPlayers++; 
 			console.log("Current players: "+currentPlayers);
@@ -35,6 +36,7 @@ exports.init = function(io){
 			}
 		});
 
+		//When host starts a new game
 		socket.on("startGame", function(data){
 			console.log("host started game");
 
@@ -50,6 +52,7 @@ exports.init = function(io){
 			console.log(questionCard);
 			io.sockets.emit('drawQuestion',{question:questionCard});
 
+			//send hands to each player
 			players.forEach(function(player){
 				player.hand = randomHand(answerDeck); //draw random hand for player
 				io.sockets.connected[player.socketID].emit('drawHand',{hand:player.hand}); //send array of hand to players
@@ -59,10 +62,14 @@ exports.init = function(io){
 			printPlayers();
 		});
 
+		//When a player submits a card
 		socket.on("submitCard",function(data){
-			selectionDeck.push(data.answer);
 			var submitPlayer = getPlayer(socket.id);
+			console.log(getPlayer(socket.id).hand);
+			removeCardfromPlayer(data.answer);
+			console.log(getPlayer(socket.id).hand);
 
+			selectionDeck.push({answer:data.answer,player:submitPlayer});
 			console.log(selectionDeck);
 			console.log(submitPlayer.username);
 			io.sockets.emit('submitPlayer',{playerName:submitPlayer.username});
@@ -72,9 +79,33 @@ exports.init = function(io){
 			}
 		});
 
+		//When the host chooses a card
 		socket.on("choseCard",function(data){
 			console.log(data.phrase);
-			io.sockets.emit('winningCard',{phrase:data.phrase});
+			console.log(data.player);
+			io.sockets.emit('winningCard',{phrase:data.phrase,player:data.player});
+		});
+
+		//When the host starts a new round
+		socket.on("newRound",function(data){
+			selectionDeck = []; //reset selection deck
+			redrawHands(players); //Add one card to each nonhost player
+			setNewHost(players); //set a new host
+
+			//tell clients new Host
+			io.sockets.emit('setNewHost',{host:findHost()})
+
+			//send out new question
+			var questionCard = randomCard(questionDeck);
+			console.log(questionCard);
+			io.sockets.emit('drawQuestion',{question:questionCard});
+
+			//send hand to each player
+			players.forEach(function(player){
+				io.sockets.connected[player.socketID].emit('drawHand',{hand:player.hand}); //send array of hand to players
+				console.log("answer deck cards: "+answerDeck.length);
+			});
+
 		});
 
 		socket.on("disconnect",function(){
@@ -103,6 +134,15 @@ exports.init = function(io){
 			};
 		};
 
+		//Remove card from players hand
+		function removeCardfromPlayer(card){
+			for (var i = 0; i < players.length; i++) {
+				if(players[i].hand.indexOf(card)> -1){
+					players[i].removeCard(card);
+				}
+			};
+		};
+
 		//Finds the current host
 		function findHost(){
 			for (var i = 0; i < players.length; i++) {
@@ -110,6 +150,32 @@ exports.init = function(io){
 					return players[i];
 				}
 			};
+		};
+
+		//sets new host in order of player array 
+		function setNewHost(){
+			var hostIndex = findHostIndex(players);
+			console.log(hostIndex);
+			players[hostIndex].host=false;
+			console.log(players);
+			if(hostIndex===(players.length-1)){
+				players[0].host=true;
+				console.log(players);
+				console.log("ONEONEONE");
+			}else{
+				players[hostIndex+1].host=true;
+				console.log(players);
+				console.log("TWOTWOTWO");
+			}
+		};
+
+		//Find the index of the first host in array
+		function findHostIndex(playerArray){
+			for(var i = 0; i<playerArray.length; i++){
+				if(playerArray[i].host==true){
+					return i;
+				}
+			}
 		};
 
 		//Return array of non-host players
@@ -123,7 +189,7 @@ exports.init = function(io){
 			return nonHosts;
 		}
 
-		//Return a random hand from deck
+		//Return a random hand of 5 cards from deck
 		function randomHand(deck){
 			var randomHand = [];
 			for(var i=0; i < 5; i++) {
@@ -138,6 +204,15 @@ exports.init = function(io){
 			var index = Math.random()*(deck.length);
 			var card = deck.splice(index, 1)[0];
 			return card;
+		};
+
+		//refill players hands
+		function redrawHands(playerArray){
+			playerArray.forEach(function(player){
+				if(player.host===false){
+					player.addCard(randomCard(answerDeck));
+				}
+			});	
 		};
 
 		//Test function printing all players

@@ -7,6 +7,7 @@ $(document).ready(function(){
 	var host=false; 
 	var question="";
 	var editQuestion="";
+	var selectedcards;
 
 	//ON SUBMITTING A USER NAME
 	$('#joinGame').click(function(){
@@ -82,7 +83,7 @@ $(document).ready(function(){
 		var answerCard = $("#playerAnswer").text();
 		removeCard(answerCard);
 		socket.emit('submitCard',{answer:answerCard});
-		$("#playerAnswerRow").fadeOut();
+		$("#playerAnswerRow").empty().fadeOut();
 		$("#playerInfo").fadeOut();
 		$("#playerWaitingMessage").fadeIn();
 	});
@@ -96,11 +97,11 @@ $(document).ready(function(){
 	socket.on("hostChoose",function(data){
 		$(".submittedPlayers").html("<h6 class='title'>All players have submitted cards</h6>").fadeIn();
 		if(host === true){
-			var selectedcards = data.chooseDeck;
+			selectedcards = data.chooseDeck;
 			$("#hostInfo").text("Choose the winning card").fadeIn();
 
 			selectedcards.forEach(function(card){
-				$("#hostAnswerRow").append("<div class='small-6 medium-2 columns'><div class='cards'>"+card+"</div></div>").fadeIn();
+				$("#hostAnswerRow").append("<div class='small-6 medium-2 columns'><div class='cards'>"+card.answer+"</div></div>").fadeIn();
 			});
 			$("#hostAnswerRow").append("<div class='small-6 medium-2 columns end'><div class='cards-submit'>Submit</div></div>").fadeIn();
 		}
@@ -109,31 +110,58 @@ $(document).ready(function(){
 	//When host picks cards
 	$("#hostAnswerRow").on("click", ".cards-submit", function(){
 		var winningPhrase = $("#hostQuestion").html();
-		socket.emit('choseCard',{phrase:winningPhrase});
+		var winningPlayer = playerFromList($("#hostAnswer").text());
+		socket.emit('choseCard',{phrase:winningPhrase,player:winningPlayer});
 	});
 
 	//When winning phrase is recieved
 	socket.on('winningCard',function(data){
 		$(".winningPhrase").html(data.phrase);
-		$("#winnerInfo").text("Submitted by xxxx");
+		$("#winnerInfo").text("Submitted by "+ data.player.username);
+		$(".submittedPlayers").empty();
 
 		if(host === true){
 			$(".hostView").fadeOut();
-			//show new round Button
+			$("#hostAnswerRow").empty();
+			$("#hostNext").fadeIn();
+			$(".endRoundView").fadeIn();
 		}else{
 			$(".playerView").fadeOut();
+			$("#hostNext").fadeOut();
+			$(".endRoundView").fadeIn();
 		};
-
-		$(".endRoundView").fadeIn();
 	});
 
 	//start a new round after chosen
+	$("#hostNext").on("click","#nextRound",function(){
+		$("#playerAnswerRow").empty().fadeOut();
+		socket.emit('newRound');
+	});
 
+	socket.on('setNewHost',function(data){
+		if(data.host.username===playerName){
+			host = true;
+		}else{
+			host = false;
+		};
+		$('.endRoundView').fadeOut();
+	});
 	/*****************HELPER FUNCTIONS******************/
 
 	//removes card from hand
 	function removeCard(card){
 		var index = hand.indexOf(card);
 		hand.splice(index,1);
+	};
+
+	//get player mapped to answer
+	function playerFromList(answer){
+		var thePlayer; 
+		selectedcards.forEach(function(element){
+			if(element.answer === answer){
+				thePlayer = element.player;
+			}
+		});
+		return thePlayer;
 	};
 });

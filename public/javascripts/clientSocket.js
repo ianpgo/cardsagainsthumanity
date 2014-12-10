@@ -2,9 +2,14 @@ $(document).ready(function(){
 
 	var socket = io.connect(':8000/');
 
+	var playerName;
+	var hand=[];
+	var host=false; 
+	var question="";
+
 	//ON SUBMITTING A USER NAME
 	$('#joinGame').click(function(){
-		var playerName = $('#username').val();
+		playerName = $('#username').val();
 		socket.emit('newPlayer',{name:playerName});
 	});
 
@@ -16,12 +21,48 @@ $(document).ready(function(){
 
 	//ON Host View waiting to start game
 	socket.on("hostWait", function(data){
+		host = true; 
 		$('.joinView').fadeOut();
 		$('.hostWait').fadeIn();
 	});
 
 	//Host presses start game 
-	socket.emit('startGame');
+	$('#startGame').click(function(){
+		socket.emit('startGame');
+	});
+
+	//Recieve the question
+	socket.on('drawQuestion',function(data){
+		var question = data.question;
+		var editQuestion = question;
+
+		//Format question to include answerfield
+		if(question.indexOf("888")>-1){
+			editQuestion=editQuestion.replace("888","<span class='answer-field'>___________________</span>");
+		}else{
+			editQuestion=editQuestion+"<br><span class='answer-field'>___________________</span>";
+		}
+
+		$('.questionDiv').html("<h1 class='question'>"+editQuestion+"</h1>");
+
+		if (host === true){
+			$('.hostWait').fadeOut();
+			$('.hostView').fadeIn();
+		}else{
+			$('.playerWait').fadeOut();
+			$('.playerView').fadeIn();
+		};
+	});
+
+	//Recieve Hand
+	socket.on("drawHand",function(data){
+		var hand = data.hand;
+		if (host === true){
+			
+		}else{
+			
+		};
+	});
 
 	// //ON SUBMITTING YOUR CARD
 	// socket.emit('submitCard',{card:cardString});

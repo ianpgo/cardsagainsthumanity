@@ -10,8 +10,11 @@
 </head>
 <body>
 
+	<!-- DIV FOR WHEN HOST IS WAITING TO START GAME-->
 	<div class="hostWait container">
-		<h1 class="title">Press button to start game</h1>
+		<div class="small-10 medium-10 small-centered columns">
+			<h2 class="title">You are the host, wait for other players to join then press start game</h2>
+		</div>
 		<div class="small-10 medium-6 small-centered columns">
 			<button class="button expand whiteButton" id="startGame">Start Game</button>
 		</div>
@@ -20,15 +23,24 @@
 		<br>
 		<div class='row'>
 			<div class="small-10 medium-6 small-centered columns bigWhiteCard">
-				<h4 class="text-center vertical-align">You are the host, you will choose the winning card</h4>
+				<h4 class="text-center vertical-align">You will be presented with possible cards, choose the winning one</h4>
 			</div>
 		</div>
 	</div>
+	<!-- END-END-END-END-END-END-END-END-END-END-END-END-->
 
+	<!-- DIV FOR WHEN NONHOST PLAYER IS WAITING TO START GAME-->
 	<div class="playerWait container">
 		<h1 class="title">Waiting for host to start game</h1>
+		<div class='row'>
+			<div class="small-10 medium-6 small-centered columns bigWhiteCard">
+				<h4 class="text-center vertical-align">You are a player, submit the card you think fits best</h4>
+			</div>
+		</div>
 	</div>
+	<!-- END-END-END-END-END-END-END-END-END-END-END-END-->
 
+	<!-- DIV FOR WHEN JOINING GAME-->
 	<div class="joinView container">
 		<h1 class="title">Cards Against Humanity</h1>
 		<h3 class="title">A party game for horrible people.</h3>
@@ -47,16 +59,17 @@
 			</div>
 		</div>
 	</div>
+	<!-- END-END-END-END-END-END-END-END-END-END-END-END-->
 	
+	<!-- DIV FOR NONHOST PLAYER ROUND-->
 	<div class="playerView container">
 		<div class="row">
-			<div class="small-12 medium-10 medium-offset-1 columns">
-				 <h1 class="question">Here is the church, Here is the steeple, Open the doors, And there is
-				 	<span id="answer-field">___________________</span>
+			<div class="small-12 medium-10 medium-offset-1 columns questionDiv">
+				 <h1 class="question">
 				 </h1>
 			</div>
 		</div>
-		<div class="row">
+		<div id="answerRow" class="row">
 			<div class="small-6 medium-2 columns">
 				<div class="cards">Being on Fire.</div>
 			</div>
@@ -76,7 +89,53 @@
 				<div class="cards-submit">Submit</div>
 			</div>
 		</div>
+		<div class="row">
+			<div class="small-12 medium-10 medium-offset-1 columns">
+				 <h4 class="title" id="hostInfo">
+				 	You are a player, choose a card then submit.
+				 </h4>
+			</div>
+		</div>
 	</div>
+	<!-- END-END-END-END-END-END-END-END-END-END-END-END-->
+
+	<!-- DIV FOR HOST PLAYER ROUND-->
+	<div class="hostView container">
+		<div class="row">
+			<div class="small-12 medium-10 medium-offset-1 columns questionDiv">
+				 <h1 class="question" id="questionField">
+				 </h1>
+			</div>
+		</div>
+		<div id="answerRow" class="row">
+			<div class="small-6 medium-2 columns">
+				<div class="cards">Being on Fire.</div>
+			</div>
+			<div class="small-6 medium-2 columns">
+				<div class="cards">Bees?</div>
+			</div>
+			<div class="small-6 medium-2 columns">
+				<div class="cards">Auschwitz.</div>
+			</div>
+			<div class="small-6 medium-2 columns">
+				<div class="cards">Jewish Fraternaties.</div>
+			</div>
+			<div class="small-6 medium-2 columns">
+				<div class="cards">Throwing a virgin into a volcano.</div>
+			</div>
+			<div class="small-6 medium-2 columns">
+				<div class="cards-submit">Submit</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="small-12 medium-10 medium-offset-1 columns">
+				 <h4 class="title" id="hostInfo">
+				 	You are the Host, please wait for players to submit cards.
+				 </h4>
+			</div>
+		</div>
+	</div>
+	<!-- END-END-END-END-END-END-END-END-END-END-END-END-->
 
 	<footer>
 		<p>Developed by Ian Go</p>

@@ -1,55 +1,73 @@
 var Player = require('../models/Player.js');
 var deck = require('../models/mymongo.js');
+var testDeck = require('../models/Deck.js');
 
-var playerHost = false; //if true player is Host
-var questionDeck = [];
-var answerDeck = []; 
+var fakeDeck = new testDeck();
 
 exports.init = function(io){
-	var currentPlayers = 0; 
-	var round = 0;
-	var host; //name of current host
+	var currentPlayers = 0; //number of current players in game
+	var round = 0; //number of rounds played in game
+	var hostID; //socketID of current host
 	var players = []; //array of player objects
 
+	var questionDeck = []; //empty array for deck of question cards
+	var answerDeck = []; //empty array for deck of answer cards 
+
 	console.log("sockets started");
-
-	//populate questionDeck from mongoDB
-	//populate answerDeck from mongoDB
-
 	io.sockets.on('connection', function(socket) {
 		
 		console.log("a new player on socket "+socket.id+" has joined.");
 
 		socket.on("newPlayer", function(data){
-			currentPlayers++;
+			currentPlayers++; 
 			console.log("Current players: "+currentPlayers);
 			if(currentPlayers===1){
-				players.push(new Player(data.name, socket.id, [], true)); 
+				players.push(new Player(data.name, socket.id, [], true)); //make first player host
 			}else{
-				players.push(new Player(data.name, socket.id, [], false));
+				players.push(new Player(data.name, socket.id, [], false)); //make subsequent players not hosts
 			}
 			console.log(players);
 			if(getPlayer(socket.id).host===true){
-				socket.emit('hostWait');
+				socket.emit('hostWait'); //send host the hostWait screen
 			}else{
-				socket.emit('playerWait');
+				socket.emit('playerWait'); //send players the playerWait screen
 			}
 		});
 
 		socket.on("startGame", function(data){
-			//Fill each players hand
+			console.log("host started game");
+
+			//populate questionDeck from mongoDB
+			questionDeck = fakeDeck.questionDeck;
+			//populate answerDeck from mongoDB
+			answerDeck = fakeDeck.answerDeck; 
+			console.log("question deck cards: "+questionDeck.length);
+			console.log("answer deck cards: "+answerDeck.length);
+
+			//broadcast the question
+			var questionCard = randomCard(questionDeck);
+			console.log(questionCard);
+			io.sockets.emit('drawQuestion',{question:questionCard});
+
 			players.forEach(function(player){
-				player.hand = randomHand(answerDeck);
+				player.hand = randomHand(answerDeck); //draw random hand for player
+				io.sockets.connected[player.socketID].emit('drawHand',{hand:player.hand}); //send array of hand to players
+				console.log("answer deck cards: "+answerDeck.length);
 			});
+
+			printPlayers();
 		});
 
 		socket.on("disconnect",function(){
-			if(currentPlayers > 0){
+			if(currentPlayers > 0){ß
 			var disPlayer = getPlayer(socket.id);
-			socket.broadcast.emit('dropPlayer',{disconnectName:disPlayer.username});
+			io.sockets.emit('dropPlayer',{disconnectName:disPlayer.username});
+			console.log(disPlayer.username+" has dropped, game ended");
 		}
 			currentPlayers = 0;
 			players=[];
+			questionDeck =[];
+			answerDeck =[];
 			//reset question and answer decks
 			console.log(players);
 		});
@@ -91,6 +109,18 @@ exports.init = function(io){
 				randomHand.push(deck.splice(index, 1)[0]);
 			};
 			return randomHand;
+		};
+
+		//Return a random card from deck, and remove from deck
+		function randomCard(deck){
+			var index = Math.random()*(deck.length);
+			var card = deck.splice(index, 1)[0];
+			return card;
+		};
+
+		//Test function printing all players
+		function printPlayers(){
+			console.log(players);
 		};
 
 	});

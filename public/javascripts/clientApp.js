@@ -10,8 +10,8 @@
 
 		$(".cards").on("click", function(){
 			var tempAnswer= $(this).text();
-			$("#answer-field").hide().text(tempAnswer).fadeIn();
-			$("#answer-field").css("text-decoration","underline");
+			$(".answer-field").hide().text(tempAnswer).fadeIn();
+			$(".answer-field").css("text-decoration","underline");
 			clearInterval(blinkerAnswer);
 		});
 
@@ -23,8 +23,8 @@
 
 		var blinkerAnswer = setInterval(function(){
 
-		$("#answer-field").fadeTo("slow",0.00);
-		setTimeout(function(){$("#answer-field").fadeTo("slow",1.00)},200);
+		$('.answer-field').fadeTo("slow",0.00);
+		setTimeout(function(){$('.answer-field').fadeTo("slow",1.00)},200);
 
 		},3000);
 

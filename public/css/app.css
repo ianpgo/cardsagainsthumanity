@@ -103,3 +103,8 @@ h1,h2,h3,h4,h5,h6{
 .hostWait{
 	display: none;
 }
+
+/*CSS FOR HOSTVIEW*/
+.hostView{
+	display: none;
+}

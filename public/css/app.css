@@ -99,6 +99,10 @@ h1,h2,h3,h4,h5,h6{
 .playerWait{
 	display:none;
 }
+
+#playerWaitingMessage{
+	display: none;
+}
 /*CSS FOR HOST WAIT VIEW*/
 .hostWait{
 	display: none;
@@ -107,4 +111,20 @@ h1,h2,h3,h4,h5,h6{
 /*CSS FOR HOSTVIEW*/
 .hostView{
 	display: none;
+}
+
+/*CSS FOR WINNING VIEW*/
+.endRoundView{
+	display: none;
+}
+
+.winningCard{
+	text-align: left;
+	font-weight: bold;
+	color: white;
+}
+
+.winningText{
+	text-align: left;
+	color: white;
 }

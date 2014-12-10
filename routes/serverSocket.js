@@ -12,6 +12,7 @@ exports.init = function(io){
 
 	var questionDeck = []; //empty array for deck of question cards
 	var answerDeck = []; //empty array for deck of answer cards 
+	var selectionDeck=[]; //deck of player selected cards
 
 	console.log("sockets started");
 	io.sockets.on('connection', function(socket) {
@@ -58,6 +59,24 @@ exports.init = function(io){
 			printPlayers();
 		});
 
+		socket.on("submitCard",function(data){
+			selectionDeck.push(data.answer);
+			var submitPlayer = getPlayer(socket.id);
+
+			console.log(selectionDeck);
+			console.log(submitPlayer.username);
+			io.sockets.emit('submitPlayer',{playerName:submitPlayer.username});
+
+			if(selectionDeck.length === currentPlayers-1){
+				io.sockets.emit('hostChoose',{chooseDeck:selectionDeck});
+			}
+		});
+
+		socket.on("choseCard",function(data){
+			console.log(data.phrase);
+			io.sockets.emit('winningCard',{phrase:data.phrase});
+		});
+
 		socket.on("disconnect",function(){
 		// 	if(currentPlayers > 0){
 		// 	var disPlayer = getPlayer(socket.id);
@@ -71,6 +90,8 @@ exports.init = function(io){
 			//reset question and answer decks
 			console.log(players);
 		});
+
+		/*****************HELPER FUNCTIONS******************/
 
 		//Gets a player according to socketID
 		function getPlayer(checkSocketID){

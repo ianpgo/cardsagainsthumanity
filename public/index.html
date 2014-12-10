@@ -70,30 +70,22 @@
 			</div>
 		</div>
 		<div id="playerAnswerRow" class="row answerRow">
-<!-- 			<div class="small-6 medium-2 columns">
-				<div class="cards">Being on Fire.</div>
+		</div>
+		<div id="playerWaitingMessage">
+			<div class="small-12 medium-10 medium-offset-1 columns">
+				 <h3 class="title">Waiting for host to choose card</h1>
 			</div>
-			<div class="small-6 medium-2 columns">
-				<div class="cards">Bees?</div>
-			</div>
-			<div class="small-6 medium-2 columns">
-				<div class="cards">Auschwitz.</div>
-			</div>
-			<div class="small-6 medium-2 columns">
-				<div class="cards">Jewish Fraternaties.</div>
-			</div>
-			<div class="small-6 medium-2 columns">
-				<div class="cards">Throwing a virgin into a volcano.</div>
-			</div>
-			<div class="small-6 medium-2 columns">
-				<div class="cards-submit">Submit</div>
-			</div> -->
 		</div>
 		<div class="row">
 			<div class="small-12 medium-10 medium-offset-1 columns">
-				 <h4 class="title" id="hostInfo">
+				 <h4 class="title" id="playerInfo">
 				 	You are a player, choose a card then submit.
 				 </h4>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="small-12 medium-10 medium-offset-1 submittedPlayers columns">
 			</div>
 		</div>
 	</div>
@@ -102,30 +94,12 @@
 	<!-- DIV FOR HOST PLAYER ROUND-->
 	<div class="hostView container">
 		<div class="row">
-			<div class="small-12 medium-10 medium-offset-1 columns questionDiv">
+			<div class="small-12 medium-10 medium-offset-1 columns questionDiv" id="hostQuestion">
 				 <h1 class="question" id="questionField">
 				 </h1>
 			</div>
 		</div>
 		<div id="hostAnswerRow" class="row answerRow">
-<!-- 			<div class="small-6 medium-2 columns">
-				<div class="cards">Being on Fire.</div>
-			</div>
-			<div class="small-6 medium-2 columns">
-				<div class="cards">Bees?</div>
-			</div>
-			<div class="small-6 medium-2 columns">
-				<div class="cards">Auschwitz.</div>
-			</div>
-			<div class="small-6 medium-2 columns">
-				<div class="cards">Jewish Fraternaties.</div>
-			</div>
-			<div class="small-6 medium-2 columns">
-				<div class="cards">Throwing a virgin into a volcano.</div>
-			</div>
-			<div class="small-6 medium-2 columns">
-				<div class="cards-submit">Submit</div>
-			</div> -->
 		</div>
 		<div class="row">
 			<div class="small-12 medium-10 medium-offset-1 columns">
@@ -134,9 +108,36 @@
 				 </h4>
 			</div>
 		</div>
+		<br>
+		<div class="row">
+			<div class="small-12 medium-10 medium-offset-1 submittedPlayers columns">
+			</div>
+		</div>
 	</div>
 	<!-- END-END-END-END-END-END-END-END-END-END-END-END-->
 
+	<!-- DIV FOR END OF ROUND  -->
+	<div class="endRoundView container">
+		<div class="row">
+			<div class="small-12 medium-10 medium-offset-1 columns">
+				 <h3 class="winningCard">
+				 	And the winner is...
+				 </h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="small-12 medium-10 medium-offset-1 winningPhrase columns">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="small-12 medium-10 medium-offset-1 columns">
+				 <h4 class="title" id="winnerInfo"></h4>
+			</div>
+		</div>
+		<br>
+	</div>
+	<!-- END-END-END-END-END-END-END-END-END-END-END-END-->
 	<footer>
 		<p>Developed by Ian Go</p>
 	</footer>

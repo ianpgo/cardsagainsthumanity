@@ -15,6 +15,11 @@ $(document).ready(function(){
 		socket.emit('newPlayer',{name:playerName});
 	});
 
+	//Get a favorite phrase to display
+	socket.on('displayFavorite', function(data){
+		$("#favoritePhrase").text(data.favePhrase);
+	});
+
 	//ON Player waiting for host to start game
 	socket.on("playerWait", function(data){
 		$('.joinView').fadeOut();

@@ -16,6 +16,16 @@ exports.init = function(io){
 
 	console.log("sockets started");
 	io.sockets.on('connection', function(socket) {
+
+	var favorites = [];
+
+	deck.findAll("favorites", function(favoritePhrases){
+		var index = Math.random()*(favoritePhrases.length);
+		var randomPhrase = favoritePhrases.splice(index, 1)[0];
+		var sendPhrase = randomPhrase.phrase;
+		console.log(randomPhrase.phrase);
+		socket.emit('displayFavorite',{favePhrase:sendPhrase});
+	});
 		
 		console.log("a new player on socket "+socket.id+" has joined.");
 

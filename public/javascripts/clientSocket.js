@@ -15,6 +15,7 @@ $(document).ready(function(){
 		socket.emit('newPlayer',{name:playerName});
 		$("#playerName").text(playerName);
 		$(".gameHeader").fadeIn();
+		$("#footerInfo").fadeOut();
 	});
 
 	//Get a favorite phrase to display

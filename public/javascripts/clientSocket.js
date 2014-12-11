@@ -133,12 +133,20 @@ $(document).ready(function(){
 		};
 	});
 
+	//when phrase is favored emit to server 
+	$(".endRoundView").on("click","#favoriteButton",function(){
+		var savePhrase = $("#winnerSave").text();
+		socket.emit('addFavorite',{favoritePhrase:savePhrase});
+		$(this).text("Phrase has beed saved");
+	});
+
 	//start a new round after chosen
 	$("#hostNext").on("click","#nextRound",function(){
 		$("#playerAnswerRow").empty().fadeOut();
 		socket.emit('newRound');
 	});
 
+	//update host variable on client side, change view to next round 
 	socket.on('setNewHost',function(data){
 		if(data.host.username===playerName){
 			host = true;
@@ -146,10 +154,12 @@ $(document).ready(function(){
 			host = false;
 		};
 		$('.endRoundView').fadeOut();
+		$("#favoriteButton").text("Favorite this Phrase");
 	});
 
+	//when a player disconnects show error message
 	socket.on('dropPlayer',function(){
-		$(".container").html("<div class='small-12 medium-10 medium-offset-1 columns'><h1 class='title'>It looks like someone disconnected from the game. Refresh to start a new one!</h1></div>");
+		$(".container").html("<div class='small-12 medium-10 medium-offset-1 columns'><h3 class='title'>It looks like someone disconnected from the game. Open a new window to start a new one!</h3></div>");
 	});
 	/*****************HELPER FUNCTIONS******************/
 

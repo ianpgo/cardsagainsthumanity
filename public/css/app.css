@@ -95,6 +95,11 @@ h1,h2,h3,h4,h5,h6{
 	outline:none;
 }
 
+.favoritePhrase{
+	text-align: left;
+	color:white;
+}
+
 /*CSS FOR PLAYER WAIT VIEW*/
 .playerWait{
 	display:none;

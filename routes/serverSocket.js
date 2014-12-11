@@ -126,6 +126,21 @@ exports.init = function(io){
 
 		});
 
+		//When a client favorites a phrase
+		socket.on("addFavorite",function(data){
+			console.log(data.favoritePhrase);
+			var favorite = data.favoritePhrase;
+			if( favorite.indexOf("?")>-1 && favorite.indexOf("?")!== favorite.charAt(favorite.length-1)){
+				var qIndex = favorite.indexOf("?");
+				qIndex++;
+				favorite = favorite.slice(0,qIndex)+" "+favorite.slice(qIndex,favorite.length);
+			}
+
+			deck.insert("favorites", {'phrase':favorite}, function (data){
+				console.log("added new phrase");
+			});
+		});
+
 		socket.on("disconnect",function(){
 		// 	if(currentPlayers > 0){
 		// 	var disPlayer = getPlayer(socket.id);

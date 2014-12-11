@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1.0" />
   <!-- credited to Cards Against Humanity under the BY-NC-SA 2.0 Creative Commons license -->
-  <title>Cards Against Humanity</title>
+  <title>Cards Against Humanity Online</title>
   <link rel="stylesheet" type="text/css" href="css/foundation.css">
   <link rel="stylesheet" type="text/css" href="css/normalize.css">
   <link rel="stylesheet" type="text/css" href="css/app.css">
@@ -13,6 +13,7 @@
 	<!-- DIV FOR PLAYERNAME AND TITLE -->
 	<div class="gameHeader container">
 		<div class="row">
+			<br>
 			<div class="small-12 medium-12 small-centered columns">
 				<h4 class="white text-left">Player: <span id="playerName"></span></h4>
 			</div>
@@ -176,8 +177,7 @@
 	</footer>
 
 	<script src="/javascripts/jquery-2.1.1.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-		<!-- Notice that socket.io adds a path to its client-side js that is not in /public -->
+	<!-- Notice that socket.io adds a path to its client-side js that is not in /public -->
 	<script src="/socket.io/socket.io.js"></script>
 	<!-- This is my js for non-socket things -->
 	<script src="/javascripts/clientApp.js"></script>

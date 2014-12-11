@@ -1,4 +1,4 @@
-cardsagainsthumanity
+CardsAgainstHumanity Online
 ====================
 
 Cards Against Humanity Built on Node.js

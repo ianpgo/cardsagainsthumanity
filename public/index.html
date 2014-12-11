@@ -3,18 +3,34 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1.0" />
+  <!-- credited to Cards Against Humanity under the BY-NC-SA 2.0 Creative Commons license -->
   <title>Test static html file.</title>
   <link rel="stylesheet" type="text/css" href="css/foundation.css">
   <link rel="stylesheet" type="text/css" href="css/normalize.css">
   <link rel="stylesheet" type="text/css" href="css/app.css">
 </head>
 <body>
+	<!-- DIV FOR PLAYERNAME AND TITLE -->
+	<div class="gameHeader container">
+		<div class="row">
+			<div class="small-12 medium-12 small-centered columns">
+				<h6 class="white text-left">Cards Against Humanity Online</h6>
+			</div>
+		</div>
+		<div class="row">
+			<div class="small-12 medium-12 small-centered columns">
+				<h4 class="white text-left" id="playerName"></h4>
+			</div>
+		</div>
+	</div>
+	<!-- END-END-END-END-END-END-END-END-END-END-END-END-->
 
 	<!-- DIV FOR WHEN HOST IS WAITING TO START GAME-->
 	<div class="hostWait container">
 		<div class="small-10 medium-10 small-centered columns">
 			<h2 class="title">You are the host, wait for other players to join then press start game</h2>
 		</div>
+		<br>
 		<div class="small-10 medium-6 small-centered columns">
 			<button class="button expand whiteButton" id="startGame">Start Game</button>
 		</div>
@@ -42,7 +58,7 @@
 
 	<!-- DIV FOR WHEN JOINING GAME-->
 	<div class="joinView container">
-		<h1 class="title">Cards Against Humanity</h1>
+		<h1 class="title">Cards Against Humanity Online</h1>
 		<h3 class="title">A party game for horrible people.</h3>
 		<br>
 		<br>
@@ -60,8 +76,8 @@
 		</div>
 		<br>
 		<div class="row">
-			<div class="small-10 medium-6 small-centered columns">
-				<p id="favoritePhrase"></p>
+			<div class="small-10 medium-6 small-centered white columns">
+				<p class="white">"<span id="favoritePhrase"></span>"</p>
 			</div>
 		</div>
 	</div>
@@ -159,8 +175,11 @@
 	<!-- END-END-END-END-END-END-END-END-END-END-END-END-->
 
 	<footer>
-		<p>Developed by Ian Go</p>
+		<div class="row">
+		<p class="text-left small-only-text-center medium-only-text-center white">Developed by Ian Go</p>
+		</div>
 	</footer>
+
 	<script src="/javascripts/jquery-2.1.1.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<!-- Notice that socket.io adds a path to its client-side js that is not in /public -->

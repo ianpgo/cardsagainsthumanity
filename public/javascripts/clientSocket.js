@@ -13,6 +13,8 @@ $(document).ready(function(){
 	$('#joinGame').click(function(){
 		playerName = $('#username').val();
 		socket.emit('newPlayer',{name:playerName});
+		$("#playerName").text(playerName);
+		$(".gameHeader").fadeIn();
 	});
 
 	//Get a favorite phrase to display
@@ -164,7 +166,7 @@ $(document).ready(function(){
 
 	//when a player disconnects show error message
 	socket.on('dropPlayer',function(){
-		$(".container").html("<div class='small-12 medium-10 medium-offset-1 columns'><h3 class='title'>It looks like someone disconnected from the game. Open a new window to start a new one!</h3></div>");
+		$(".container").html("<div class='small-12 medium-10 medium-offset-1 columns'><h2 class='title'>It looks like someone disconnected from the game. Open a new window to start a new one!</h2></div>");
 	});
 	/*****************HELPER FUNCTIONS******************/
 

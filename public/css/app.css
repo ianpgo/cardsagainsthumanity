@@ -20,7 +20,7 @@ body
 }
 
 h1{
-	font-size: 3.4em;
+	font-size: 3.2em;
 }
 
 h1,h2,h3,h4,h5,h6{
@@ -80,6 +80,20 @@ h1,h2,h3,h4,h5,h6{
 	font-weight: bold;
 	border-radius:5px;
 }
+
+.white{
+	color: white;
+}
+
+/*CSS FOR GAME HEADER*/
+.gameHeader{
+	display: none;
+}
+
+.margin-left{
+	margin-left:5px;
+}
+
 /*STYLES FOR PLAYER HAND*/
 
 .playerView{

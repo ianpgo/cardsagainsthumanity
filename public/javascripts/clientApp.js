@@ -33,6 +33,7 @@
 
 		var blinkerAnswer = setInterval(function(){
 
+		//Add blinker for underline
 		$('.answer-field').fadeTo("slow",0.00);
 		setTimeout(function(){$('.answer-field').fadeTo("slow",1.00)},200);
 

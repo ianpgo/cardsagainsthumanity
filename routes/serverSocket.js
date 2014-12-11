@@ -1,8 +1,5 @@
 var Player = require('../models/Player.js');
 var deck = require('../models/mymongo.js');
-var testDeck = require('../models/Deck.js');
-
-var fakeDeck = new testDeck();
 
 exports.init = function(io){
 	var currentPlayers = 0; //number of current players in game
@@ -14,17 +11,20 @@ exports.init = function(io){
 	var answerDeck = []; //empty array for deck of answer cards 
 	var selectionDeck=[]; //deck of player selected cards with players mapped
 
+	var backupQuestions = []; //backup deck for reshuffling
+	var backupAnswers = []; //back up deck for reshuffling
+
 	console.log("sockets started");
 	io.sockets.on('connection', function(socket) {
 
 	var favorites = [];
 
+	//Pull from mongoDB a random favorite phrase
 	deck.findAll("favorites", function(favoritePhrases){
 		var index = Math.random()*(favoritePhrases.length);
-		var randomPhrase = favoritePhrases.splice(index, 1)[0];
+		var randomPhrase = favoritePhrases.splice(index, 1)[0]; //get a random phrase from mongo favorite collection
 		var sendPhrase = randomPhrase.phrase;
-		console.log(randomPhrase.phrase);
-		socket.emit('displayFavorite',{favePhrase:sendPhrase});
+		socket.emit('displayFavorite',{favePhrase:sendPhrase}); //send random phrase to connected socket
 	});
 		
 		console.log("a new player on socket "+socket.id+" has joined.");
@@ -55,7 +55,7 @@ exports.init = function(io){
 			}else{
 				players.push(new Player(data.name, socket.id, [], false)); //make subsequent players not hosts
 			}
-			console.log(players);
+
 			if(getPlayer(socket.id).host===true){
 				socket.emit('hostWait'); //send host the hostWait screen
 			}else{
@@ -67,10 +67,10 @@ exports.init = function(io){
 		socket.on("startGame", function(data){
 			console.log("host started game");
 
-			// //populate questionDeck from mongoDB
-			// questionDeck = fakeDeck.questionDeck;
-			// //populate answerDeck from mongoDB
-			// answerDeck = fakeDeck.answerDeck; 
+			//populate the backup question deck
+			backupQuestions= questionDeck;
+			//populate the backup answer deck
+			backupAnswers = answerDeck; 
 
 			console.log("question deck cards: "+questionDeck.length);
 			console.log("answer deck cards: "+answerDeck.length);
@@ -86,36 +86,40 @@ exports.init = function(io){
 				io.sockets.connected[player.socketID].emit('drawHand',{hand:player.hand}); //send array of hand to players
 				console.log("answer deck cards: "+answerDeck.length);
 			});
-
-			printPlayers();
 		});
 
 		//When a player submits a card
 		socket.on("submitCard",function(data){
-			var submitPlayer = getPlayer(socket.id);
-			console.log(getPlayer(socket.id).hand);
-			removeCardfromPlayer(data.answer);
-			console.log(getPlayer(socket.id).hand);
+			var submitPlayer = getPlayer(socket.id); //get the player who submitted the card
+			removeCardfromPlayer(data.answer); //remove the submitted card from players hand
 
-			selectionDeck.push({answer:data.answer,player:submitPlayer});
-			console.log(selectionDeck);
-			console.log(submitPlayer.username);
-			io.sockets.emit('submitPlayer',{playerName:submitPlayer.username});
+			selectionDeck.push({answer:data.answer,player:submitPlayer}); //put submitted card is selection deck
+
+			io.sockets.emit('submitPlayer',{playerName:submitPlayer.username}); //emit submit player name to all
 
 			if(selectionDeck.length === currentPlayers-1){
 				io.sockets.emit('hostChoose',{chooseDeck:selectionDeck});
-			}
+			}//if all players have submitted, let host choose
 		});
 
 		//When the host chooses a card
 		socket.on("choseCard",function(data){
 			console.log(data.phrase);
 			console.log(data.player);
-			io.sockets.emit('winningCard',{phrase:data.phrase,player:data.player});
+			io.sockets.emit('winningCard',{phrase:data.phrase,player:data.player}); //emit the winning phrase to all players
 		});
 
 		//When the host starts a new round
 		socket.on("newRound",function(data){
+
+			//If playing decks are running low, reset them
+			if(questionDeck.length < 2){
+				reshuffleQuestions();
+			};
+			if(answerDeck.length<10){
+				reshuffleAnswers();
+			};
+
 			selectionDeck = []; //reset selection deck
 			redrawHands(players); //Add one card to each nonhost player
 			setNewHost(players); //set a new host
@@ -136,7 +140,7 @@ exports.init = function(io){
 
 		});
 
-		//When a client favorites a phrase
+		//When a client decides to favor a phrase
 		socket.on("addFavorite",function(data){
 			console.log(data.favoritePhrase);
 			var favorite = data.favoritePhrase;
@@ -144,19 +148,19 @@ exports.init = function(io){
 				var qIndex = favorite.indexOf("?");
 				qIndex++;
 				favorite = favorite.slice(0,qIndex)+" "+favorite.slice(qIndex,favorite.length);
-			}
+			} //add space after ? in phrase to make pretty
 
+			//insert the favorite phrase into mongo
 			deck.insert("favorites", {'phrase':favorite}, function (data){
 				console.log("added new phrase");
 			});
 		});
 
+		//On disconnent end game
 		socket.on("disconnect",function(){
-		// 	if(currentPlayers > 0){
-		// 	var disPlayer = getPlayer(socket.id);
-		// 	io.sockets.emit('dropPlayer',{disconnectName:disPlayer.username});
-		// 	console.log(disPlayer.username+" has dropped, game ended");
-		// }
+			if(currentPlayers > 0){
+			io.sockets.emit('dropPlayer');
+		}
 			currentPlayers = 0;
 			players=[];
 			questionDeck =[];
@@ -164,7 +168,6 @@ exports.init = function(io){
 			selectionDeck =[];
 			//reset question and answer decks
 			console.log(players);
-			io.sockets.emit('dropPlayer');
 		});
 
 		/*****************HELPER FUNCTIONS******************/
@@ -204,12 +207,8 @@ exports.init = function(io){
 			console.log(players);
 			if(hostIndex===(players.length-1)){
 				players[0].host=true;
-				console.log(players);
-				console.log("ONEONEONE");
 			}else{
 				players[hostIndex+1].host=true;
-				console.log(players);
-				console.log("TWOTWOTWO");
 			}
 		};
 
@@ -264,39 +263,15 @@ exports.init = function(io){
 			console.log(players);
 		};
 
+		//Reshuffles questions by repopulating with backup
+		function reshuffleQuestions(){
+			questionDeck = backupQuestions;
+		};
+
+		//Reshuffles answers by repopulating with backup
+		function reshuffleAnswers(){
+			answerDeck = backupAnswers;
+		};
+
 	});
 }
-
-
-
-// exports.init = function(io) {
-// 	var currentPlayers = 0; // keep track of the number of players
-// 	var ordinalPlayers = 0; // keep track of total number of players who have joined
-
-//   // When a new connection is initiated
-// 	io.sockets.on('connection', function (socket) {
-// 		++currentPlayers;
-// 		++ordinalPlayers; 
-// 		// Send ("emit") a 'players' event back to the socket that just connected.
-// 		socket.emit('players', { number: currentPlayers});
-		
-// 		 * Emit players events also to all (i.e. broadcast) other connected sockets.
-// 		 * Broadcast is not emitted back to the current (i.e. "this") connection
-     
-// 		socket.broadcast.emit('players', { number: currentPlayers});
-		
-// 		socket.emit('welcome',{message: "Welcome Player "+ordinalPlayers});
-// 		//emits welcome message with the order the player joined the server 
-
-// 		/*
-// 		 * Upon this connection disconnecting (sending a disconnect event)
-// 		 * decrement the number of players and emit an event to all other
-// 		 * sockets.  Notice it would be nonsensical to emit the event back to the
-// 		 * disconnected socket.
-// 		 */
-// 		socket.on('disconnect', function () {
-// 			--currentPlayers;
-// 			socket.broadcast.emit('players', { number: currentPlayers});
-// 		});
-// 	});
-// }

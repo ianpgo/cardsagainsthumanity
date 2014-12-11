@@ -2,12 +2,12 @@ $(document).ready(function(){
 
 	var socket = io.connect(':8000/');
 
-	var playerName;
-	var hand=[];
-	var host=false; 
-	var question="";
-	var editQuestion="";
-	var selectedcards;
+	var playerName; //playername
+	var hand=[]; //the players hand
+	var host=false; //boolean if player is hosts
+	var question=""; //stores the current question card
+	var editQuestion=""; //stores a string formatted version of question card
+	var selectedcards; //var of submitted cards
 
 	//ON SUBMITTING A USER NAME
 	$('#joinGame').click(function(){

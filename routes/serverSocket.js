@@ -32,7 +32,9 @@ exports.init = function(io){
 		//When a new player is added to the game
 		socket.on("newPlayer", function(data){
 			currentPlayers++; 
-			console.log("Current players: "+currentPlayers);
+			io.sockets.emit('numPlayers',{numberPlayers:currentPlayers});
+			console.log("Current players: "+ currentPlayers);
+			console.log("Player name: "+ data.name);
 			if(currentPlayers===1){
 				players.push(new Player(data.name, socket.id, [], true)); //make first player host
 

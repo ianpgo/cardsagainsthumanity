@@ -18,6 +18,10 @@ $(document).ready(function(){
 		$("#footerInfo").fadeOut();
 	});
 
+	socket.on('numPlayers', function(data){
+		$("#numPlayers").text(data.numberPlayers);
+	});
+
 	//Get a favorite phrase to display
 	socket.on('displayFavorite', function(data){
 		$("#favoritePhrase").text(data.favePhrase);
